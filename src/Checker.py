@@ -1,8 +1,8 @@
-from checkers.const import SQUARE_SIZE, GREY, CROWN
+from .Config import RED, WHITE, SQUARE_SIZE, GREY, CROWN
 import pygame
 
 
-class Piece:
+class Checker:
     PADDING = 15
     OUTLINE = 2
 
@@ -18,6 +18,18 @@ class Piece:
     def calc_pos(self):
         self.x = SQUARE_SIZE * self.col + SQUARE_SIZE // 2
         self.y = SQUARE_SIZE * self.row + SQUARE_SIZE // 2
+
+    def move_rules(self):
+        if self.color == RED:
+            return (self.row - 1, self.col - 1), (self.row - 1, self.col + 1)
+        return (self.row + 1, self.col - 1), (self.row + 1, self.col + 1)
+
+    def jump_rules(self):
+        if self.color == RED:
+            return {(self.row - 2, self.col - 2): (self.row - 1, self.col - 1),
+                    (self.row - 2, self.col + 2): (self.row - 1, self.col + 1)}
+        return {(self.row + 2, self.col - 2): (self.row + 1, self.col - 1),
+                (self.row + 2, self.col + 2): (self.row + 1, self.col + 1)}
 
     def make_king(self):
         self.king = True
