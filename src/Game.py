@@ -1,17 +1,17 @@
 import pygame
-from .Config import RED, WHITE, BLUE, SQUARE_SIZE, ROWS, COLUMNS, POSSIBLE_MOVE_COLOR, VALID_MOVE_MARK_RADIUS
+import src.Config as Config
 from src.Board import Board
 
-class Game:
-    forced_to_take = set()
-    selected = None
-    valid_moves = {}
-    turn = RED
-    board = Board()
 
-    def __init__(self, win):
+class Game:
+    def __init__(self):
         self._init()
-        self.win = win
+        self.win = pygame.display.set_mode((Config.WIDTH, Config.HEIGHT))
+        self.forced_to_take = set()
+        self.selected = None
+        self.valid_moves = {}
+        self.turn = Config.Pieces.BLACK
+        self.board = Board()
 
     def update(self):
         self.board.draw(self.win)
@@ -20,7 +20,7 @@ class Game:
 
     def _init(self):
         self.selected = None
-        self.turn = RED
+        self.turn = Config.Pieces.BLACK
         self.valid_moves = {}
 
     def winner(self):
@@ -66,17 +66,17 @@ class Game:
     def draw_valid_moves(self, moves):
         for move in moves:
             row, column = move
-            pygame.draw.circle(self.win, POSSIBLE_MOVE_COLOR, (
-                column * SQUARE_SIZE + SQUARE_SIZE // 2,
-                row * SQUARE_SIZE + SQUARE_SIZE // 2), VALID_MOVE_MARK_RADIUS)
+            pygame.draw.circle(self.win, Config.POSSIBLE_MOVE_COLOR, (
+                column * Config.SQUARE_SIZE + Config.SQUARE_SIZE // 2,
+                row * Config.SQUARE_SIZE + Config.SQUARE_SIZE // 2), Config.VALID_MOVE_MARK_RADIUS)
 
     def change_turn(self):
         self.valid_moves.clear()
         self.forced_to_take.clear()
-        if self.turn == RED:
-            self.turn = WHITE
+        if self.turn == Config.Pieces.BLACK:
+            self.turn = Config.Pieces.WHITE
         else:
-            self.turn = RED
+            self.turn = Config.Pieces.BLACK
         self.find_forced_to_take_pieces()
 
     def get_board(self):
@@ -91,8 +91,8 @@ class Game:
         self.forced_to_take.add(piece)
 
     def find_forced_to_take_pieces(self):
-        for row in range(ROWS):
-            for column in range(COLUMNS):
+        for row in range(Config.ROWS):
+            for column in range(Config.COLUMNS):
                 piece = self.board.get_tile(row, column)
                 if piece != 0 and self.board.get_possible_jumps(piece) != {} and piece.color == self.turn:
                     self.forced_to_take.add(piece)

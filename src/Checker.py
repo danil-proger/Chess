@@ -1,11 +1,8 @@
-from .Config import RED, WHITE, SQUARE_SIZE, GREY, CROWN
 import pygame
+import src.Config as Config
 
 
 class Checker:
-    PADDING = 15
-    OUTLINE = 2
-
     def __init__(self, row, col, color):
         self.row = row
         self.col = col
@@ -16,16 +13,16 @@ class Checker:
         self.calc_pos()
 
     def calc_pos(self):
-        self.x = SQUARE_SIZE * self.col + SQUARE_SIZE // 2
-        self.y = SQUARE_SIZE * self.row + SQUARE_SIZE // 2
+        self.x = Config.SQUARE_SIZE * self.col + Config.SQUARE_SIZE // 2
+        self.y = Config.SQUARE_SIZE * self.row + Config.SQUARE_SIZE // 2
 
     def move_rules(self):
-        if self.color == RED:
+        if self.color == Config.Pieces.BLACK:
             return (self.row - 1, self.col - 1), (self.row - 1, self.col + 1)
         return (self.row + 1, self.col - 1), (self.row + 1, self.col + 1)
 
     def jump_rules(self):
-        if self.color == RED:
+        if self.color == Config.Pieces.BLACK:
             return {(self.row - 2, self.col - 2): (self.row - 1, self.col - 1),
                     (self.row - 2, self.col + 2): (self.row - 1, self.col + 1)}
         return {(self.row + 2, self.col - 2): (self.row + 1, self.col - 1),
@@ -34,17 +31,12 @@ class Checker:
     def make_king(self):
         self.king = True
 
-    def draw(self, win):
-        radius = SQUARE_SIZE // 2 - self.PADDING
-        pygame.draw.circle(win, GREY, (self.x, self.y), radius + self.OUTLINE)
-        pygame.draw.circle(win, self.color, (self.x, self.y), radius)
-        if self.king:
-            win.blit(CROWN, (self.x - CROWN.get_width() // 2, self.y - CROWN.get_height() // 2))
+    def draw(self, window):
+        color = Config.WHITE_PIECES_COLOR if self.color == Config.Pieces.WHITE else Config.BLACK_PIECES_COLOR
+        pygame.draw.circle(window, Config.OUTLINE_COLOR, (self.x, self.y), Config.PIECE_RADIUS + Config.PIECE_OUTLINE)
+        pygame.draw.circle(window, color, (self.x, self.y), Config.PIECE_RADIUS)
 
     def move(self, row, col):
         self.row = row
         self.col = col
         self.calc_pos()
-
-    def __repr__(self):
-        return str(self.color)

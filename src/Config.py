@@ -1,6 +1,7 @@
 import pygame
 import enum
 
+
 pygame.display.init()
 WIDTH = min(pygame.display.Info().current_w, pygame.display.Info().current_h) * 3 // 4
 HEIGHT = min(pygame.display.Info().current_w, pygame.display.Info().current_h) * 3 // 4
@@ -12,6 +13,8 @@ PIECE_RADIUS = SQUARE_SIZE * 2 // 5
 PIECE_OUTLINE = PIECE_RADIUS // 10
 VALID_MOVE_MARK_RADIUS = PIECE_RADIUS // 2
 
+WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
+
 OUTLINE_COLOR = (128, 128, 128)
 POSSIBLE_MOVE_COLOR = (128, 128, 128)
 WHITE_TILES_COLOR = (190, 190, 190)
@@ -19,13 +22,10 @@ BLACK_TILES_COLOR = (65, 65, 65)
 WHITE_PIECES_COLOR = (230, 230, 230)
 BLACK_PIECES_COLOR = (25, 25, 25)
 
-WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
+delta_first = 1
+delta_second = 2
 
-# rgb
-RED = (255, 0, 0)
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
-GREY = (128, 128, 128)
 
-CROWN = pygame.transform.scale(pygame.image.load('src/images/Crown.png'), (44, 25))
+class Pieces(enum.Enum):
+    WHITE = 'WHITE'
+    BLACK = 'BLACK'
