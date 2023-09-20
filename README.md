@@ -1,1 +1,1 @@
-# Chess
+# Checkers
